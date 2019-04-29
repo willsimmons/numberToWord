@@ -78,7 +78,7 @@ const numberToWord = (input) => {
 
         }
     } else {
-      // todo: this block could be turned into a function to handle the middle and right 
+      // todo: this block could be turned into a function to handle the middle and right, since we did the same above 
       // columns of numbers (ex: for millions x00,x00,x00 - but dealing with the scope of the problem... lets forge ahead
       if (data.length === 2) {
         let tens = data[0] * 10;
@@ -92,7 +92,83 @@ const numberToWord = (input) => {
             return word;              
           }
       }
-    }  
-}; 
+      // 1,2,and 3 digit lengths are accounted for, though this code is somewhat repetitive, lets pass the tests
+      // and worry about refactoring later - possible recursive too, if we keep track of places and had a word bank for
+      // hundreds, thousands, etc -but lets focus on the goal
+      if (data.length === 4) {
+        //just like our hundreds block...ln 56
+        word = word.concat(`${numberKey[data[0]]} thousand`);
+        // for someting like 9000
+        if (data[1] === 0 && data[2] === 0 && data[3] === 0) {  
+          return word;
+        } else {
+            word = word.concat(`${numberKey[data[1]]} hundred`);
+            //someting like 900
+            if (data[2] === 0 && data[3] === 0 ) {  
+                return word;
+            } else {
+              word = word.concat(' and ');
+              //something like 904
+              if (data[1] === 0) {  //will only have to handle 'ones' in this case
+              word = word.concat(`${numberKey[data[2]]}`);  
+                  return word;
+                } 
+                //have to handle two digits
+                let tens = data[1] * 10;
+                let ones = data[2];
+                let possibleSpecialNumber = tens + ones;
+                if (numberKey[possibleSpecialNumber]) {
+                  word = word.concat(`${numberKey[possibleSpecialNumber]}`); //something like 19
+                  return word;
+                } else {
+                  word = word.concat(`${numberKey[tens]} ${numberKey[ones]}` )
+                  return word;  
+                }
+            }
+          }
+        }
+        if (data.length === 5) {
+          let tens = data[0] * 10;  //look familiar (handle two digits...)
+          let ones = data[1];
+          let possibleSpecialNumber = tens + ones;
+          if (numberKey[possibleSpecialNumber]) {
+            word = word.concat(`${numberKey[possibleSpecialNumber]}`); 
+            } else {
+              word = word.concat(`${numberKey[tens]} ${numberKey[ones]}` )
+              }
+            }
+          }
+          word = word.concat(` thousand `);
+          // for someting like 91000
+          if (data[2] === 0 && data[3] === 0 && data[4] === 0) {  
+            return word;
+          } else {
+            if(data[2] !== 0) {
+              word = word.concat(`${numberKey[data[2]]} hundred`);
+              if (data[3] === 0 && data[4] === 0 ) {  
+                return word;
+              } else {
+              word = word.concat(' and ');
+                if (data[3] === 0) {  //will only have to handle 'ones' in this case
+                word = word.concat(`${numberKey[data[2]]}`);  
+                    return word;
+                  } 
+                  //have to handle two digits
+                  let tens = data[1] * 10;
+                  let ones = data[2];
+                  let possibleSpecialNumber = tens + ones;
+                  if (numberKey[possibleSpecialNumber]) {
+                    word = word.concat(`${numberKey[possibleSpecialNumber]}`); //something like 19
+                    return word;
+                  } else {
+                    word = word.concat(`${numberKey[tens]} ${numberKey[ones]}` )
+                    return word;  
+                  }
+              }
+            }
+          }
+
+      }  
+
 
 export default numberToWord;
