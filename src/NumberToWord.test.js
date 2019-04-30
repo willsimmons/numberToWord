@@ -39,6 +39,6 @@ it('handles thousands and until the input limit',() => {
   expect(numberToWord(14035)).toBe('fourteen thousand and thirty five');   
   expect(numberToWord(4223)).toBe('four thousand two hundred and twenty three');    
   expect(numberToWord(71205)).toBe('seventy one thousand two hundred and five');    
-  expect(numberToWord(21111)).toBe('twenty one thouand one hundred and eleven');    
-  expect(numberToWord(99999)).toBe('ninety nine thousand nine hundred and ninenty nine');     
+  expect(numberToWord(21111)).toBe('twenty one thousand one hundred and eleven');    
+  expect(numberToWord(99999)).toBe('ninety nine thousand nine hundred and ninety nine');     
 });

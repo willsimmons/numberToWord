@@ -40,7 +40,7 @@ const numberToWord = (num) => {
     60: 'sixty',
     70: 'seventy',
     80: 'eighty',
-    90: 'ninenty',
+    90: 'ninety',
   };
   // check if the input is a special number
   if ( numberWords[input] ) { 
@@ -90,68 +90,41 @@ const numberToWord = (num) => {
   // and worry about refactoring later - possible recursive too, if we keep track of places and had a result bank for
   // hundreds, thousands, etc -but lets focus on the goal
   if (data.length === 4) {
-    //just like our hundreds block...ln 56
-    result = result.concat(`${numberWords[data[0]]} thousand`);
     // for someting like 9000
-    if (data[1] === 0 && data[2] === 0 && data[3] === 0) {  
+    if (data[1] === 0 && data[2] === 0 && data[3] === 0) {
+      result = result.concat(`${numberWords[data[0]]} thousand`);  
       return result;
     } else {
-      result = result.concat(`${numberWords[data[1]]} hundred`);
-      //someting like 900
+      result = result.concat(`${numberWords[data[0]]} thousand `);
+      if (data[1] !== 0) {
+        result = result.concat(`${numberWords[data[1]]} hundred `);
+      }
       if (data[2] === 0 && data[3] === 0 ) {  
         return result;
       } else {
-        result = result.concat(' and ');
-        //something like 904
-        if (data[1] === 0) {  //will only have to handle 'ones' in this case
-          result = result.concat(`${numberWords[data[2]]}`);  
-          return result;
-        }
+        result = result.concat('and ');
         //have to handle two digits 
-        return twoDigitHelper(data[1], data[2],result);
+        return twoDigitHelper(data[2], data[3],result);
       }
     }
   }
   if (data.length === 5) {
-    let tens = data[0] * 10;  //look familiar (handle two digits...)
-    let ones = data[1];
-    let possibleSpecialNumber = tens + ones;
-      if (numberWords[possibleSpecialNumber]) {
-        result = result.concat(`${numberWords[possibleSpecialNumber]}`); 
-      } else {
-        result = result.concat(`${numberWords[tens]} ${numberWords[ones]}` )
-      }
-        result = result.concat(` thousand `);
-        // for someting like 91000
-        if (data[2] === 0 && data[3] === 0 && data[4] === 0) {  
+    // lets use the helper function, but NOT return it, just keep it in result
+    result = twoDigitHelper(data[0], data[1], result).concat(' thousand');
+    if (data[2] === 0 && data[3] === 0 && data[4] === 0) {  
+      return result;
+    } else {
+      if(data[2] !== 0) {
+        result = result.concat(` ${numberWords[data[2]]} hundred`);
+        if (data[3] === 0 && data[4] === 0 ) {  
           return result;
-        } else {
-          if(data[2] !== 0) {
-            result = result.concat(`${numberWords[data[2]]} hundred`);
-            if (data[3] === 0 && data[4] === 0 ) {  
-              return result;
-            } else {
-              result = result.concat(' and ');
-            }
-            if (data[3] === 0) {  //will only have to handle 'ones' in this case
-              result = result.concat(`${numberWords[data[2]]}`);  
-              return result;
-            }   
-            //have to handle two digits
-            let tens = data[1] * 10;
-            let ones = data[2];
-            let possibleSpecialNumber = tens + ones;
-            if (numberWords[possibleSpecialNumber]) {
-              result = result.concat(`${numberWords[possibleSpecialNumber]}`); //something like 19
-              return result;
-            } else {
-              result = result.concat(`${numberWords[tens]} ${numberWords[ones]}` )
-              return result;  
-            }
-          }
         }
-      }
-}  
+      } 
+      result = result.concat(' and ');
+      return twoDigitHelper(data[3], data[4], result);
+    }
+  }
+};  
 
 
 export default numberToWord;
