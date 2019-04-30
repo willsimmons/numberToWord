@@ -47,21 +47,28 @@ const numberToWord = (num) => {
     result = numberWords[input] 
     return result;  
   }
-  //place input in an array, of numbers
+  // place input in an array, of numbers
   const data = input.toString().split('').map(number => parseInt(number));
   
-  if (data.length === 2) {
-    const tens = data[0] * 10;
-    const ones = data[1];
+  // while writing this out, i noticed i was handling 'two numbers' a lot, so here is a helper
+  // function for dealing with two digits  
+  const twoDigitHelper = (tensPlace, onesPlace, resultAtThisPoint) => {
+    const tens = tensPlace * 10;
+    const ones = onesPlace;
     const possibleSpecialNumber = tens + ones;
     if (numberWords[possibleSpecialNumber]) {
-      result = result.concat(`${numberWords[possibleSpecialNumber]}`); //something like 19
-      return result;
+      resultAtThisPoint = resultAtThisPoint.concat(`${numberWords[possibleSpecialNumber]}`); //something like 19
+      return resultAtThisPoint;
     } else {
-      result = result.concat(`${numberWords[tens]} ${numberWords[ones]}` )
-      return result;              
+      resultAtThisPoint = resultAtThisPoint.concat(`${numberWords[tens]} ${numberWords[ones]}` )
+      return resultAtThisPoint;              
     }
   } 
+ 
+  if (data.length === 2) {
+    return twoDigitHelper(data[0], data[1],result)
+  }
+
   //how to handle 3,4,5 
   if (data.length === 3) {
     result = result.concat(`${numberWords[data[0]]} hundred`);
@@ -76,60 +83,39 @@ const numberToWord = (num) => {
         return result;
       } 
       //have to handle two digits
-      let tens = data[1] * 10;
-      let ones = data[2];
-      let possibleSpecialNumber = tens + ones;
-      if (numberWords[possibleSpecialNumber]) {
-        result = result.concat(`${numberWords[possibleSpecialNumber]}`); //something like 19
-        return result;
-      }
-      result = result.concat(`${numberWords[tens]} ${numberWords[ones]}` )
-      return result;  
+      return twoDigitHelper(data[1],data[2],result);
     }
   }
-  
-    // todo: this block could be turned into a function to handle the middle and right, since we did the same above 
-    // columns of numbers (ex: for millions x00,x00,x00 - but dealing with the scope of the problem... lets forge ahead
-
-    // 1,2,and 3 digit lengths are accounted for, though this code is somewhat repetitive, lets pass the tests
-    // and worry about refactoring later - possible recursive too, if we keep track of places and had a result bank for
-    // hundreds, thousands, etc -but lets focus on the goal
-    if (data.length === 4) {
-      //just like our hundreds block...ln 56
-      result = result.concat(`${numberWords[data[0]]} thousand`);
-      // for someting like 9000
-      if (data[1] === 0 && data[2] === 0 && data[3] === 0) {  
+  // 1,2,and 3 digit lengths are accounted for, though this code is somewhat repetitive, lets pass the tests
+  // and worry about refactoring later - possible recursive too, if we keep track of places and had a result bank for
+  // hundreds, thousands, etc -but lets focus on the goal
+  if (data.length === 4) {
+    //just like our hundreds block...ln 56
+    result = result.concat(`${numberWords[data[0]]} thousand`);
+    // for someting like 9000
+    if (data[1] === 0 && data[2] === 0 && data[3] === 0) {  
+      return result;
+    } else {
+      result = result.concat(`${numberWords[data[1]]} hundred`);
+      //someting like 900
+      if (data[2] === 0 && data[3] === 0 ) {  
         return result;
       } else {
-        result = result.concat(`${numberWords[data[1]]} hundred`);
-        //someting like 900
-        if (data[2] === 0 && data[3] === 0 ) {  
+        result = result.concat(' and ');
+        //something like 904
+        if (data[1] === 0) {  //will only have to handle 'ones' in this case
+          result = result.concat(`${numberWords[data[2]]}`);  
           return result;
-        } else {
-          result = result.concat(' and ');
-          //something like 904
-          if (data[1] === 0) {  //will only have to handle 'ones' in this case
-            result = result.concat(`${numberWords[data[2]]}`);  
-            return result;
-          } 
-          //have to handle two digits
-          let tens = data[1] * 10;
-          let ones = data[2];
-          let possibleSpecialNumber = tens + ones;
-          if (numberWords[possibleSpecialNumber]) {
-            result = result.concat(`${numberWords[possibleSpecialNumber]}`); //something like 19
-            return result;
-          } else {
-            result = result.concat(`${numberWords[tens]} ${numberWords[ones]}` )
-            return result;  
-          }
         }
+        //have to handle two digits 
+        return twoDigitHelper(data[1], data[2],result);
       }
     }
-    if (data.length === 5) {
-      let tens = data[0] * 10;  //look familiar (handle two digits...)
-      let ones = data[1];
-      let possibleSpecialNumber = tens + ones;
+  }
+  if (data.length === 5) {
+    let tens = data[0] * 10;  //look familiar (handle two digits...)
+    let ones = data[1];
+    let possibleSpecialNumber = tens + ones;
       if (numberWords[possibleSpecialNumber]) {
         result = result.concat(`${numberWords[possibleSpecialNumber]}`); 
       } else {
