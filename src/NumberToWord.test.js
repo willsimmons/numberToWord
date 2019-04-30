@@ -8,11 +8,11 @@ it('returns null if a number is negative', () => {
   expect(numberToWord(-14)).toBeNull();
 });
 
-it('returns null if a number is greater than 99,999', () =>{
+it('returns null if a number is greater than 99,999', () => {
   expect(numberToWord(500000)).toBeNull();
 });
 
-it('returns the correct number if its a *special* number', () =>{
+it('returns the correct number if its a *special* number', () => {
   expect(numberToWord(40)).toBe('forty');
   expect(numberToWord(0)).toBe('zero');
   expect(numberToWord(17)).toBe('seventeen');
@@ -26,19 +26,23 @@ it('ignores fake zeros in front', () => {
   expect(numberToWord('00037')).toBe('thirty seven');
 });
 
-it('handles 3 digits', ()=> {
-  expect(numberToWord(900)).toBe('nine hundred');    
-  expect(numberToWord(701)).toBe('seven hundred and one');  
-  expect(numberToWord(429)).toBe('four hundred and twenty nine');  
+it('handles 3 digits', () => {
+  expect(numberToWord(900)).toBe('nine hundred');
+  expect(numberToWord(701)).toBe('seven hundred and one');
+  expect(numberToWord(429)).toBe('four hundred and twenty nine');
   expect(numberToWord(214)).toBe('two hundred and fourteen');
 });
 
-it('handles thousands and until the input limit',() => {
-  expect(numberToWord(9000)).toBe('nine thousand');    
-  expect(numberToWord(60001)).toBe('sixty thousand and one');    
-  expect(numberToWord(14035)).toBe('fourteen thousand and thirty five');   
-  expect(numberToWord(4223)).toBe('four thousand two hundred and twenty three');    
-  expect(numberToWord(71205)).toBe('seventy one thousand two hundred and five');    
-  expect(numberToWord(21111)).toBe('twenty one thousand one hundred and eleven');    
-  expect(numberToWord(99999)).toBe('ninety nine thousand nine hundred and ninety nine');     
+it('handles thousands and until the input limit', () => {
+  expect(numberToWord(9000)).toBe('nine thousand');
+  expect(numberToWord(60001)).toBe('sixty thousand and one');
+  expect(numberToWord(14035)).toBe('fourteen thousand and thirty five');
+  expect(numberToWord(4223)).toBe('four thousand two hundred and twenty three');
+  expect(numberToWord(71205)).toBe('seventy one thousand two hundred and five');
+  expect(numberToWord(21111)).toBe(
+    'twenty one thousand one hundred and eleven'
+  );
+  expect(numberToWord(99999)).toBe(
+    'ninety nine thousand nine hundred and ninety nine'
+  );
 });
