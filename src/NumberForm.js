@@ -4,7 +4,7 @@ import NumberToWord from './NumberToWord';
 
 class NumberForm extends Component {
   state = {
-    number: null,
+    number: '',
     word: ''
   };
 
@@ -13,23 +13,21 @@ class NumberForm extends Component {
     let { number } = this.state;
     const word = NumberToWord(number);
     this.setState({
-      number: null,
+      number: '',
       word
     });
-    console.log(this.state);
   };
 
   render() {
-    let input;
     return (
       <Container text textAlign="center">
         <h1>Number To Words</h1>
-        <Form onChange={this.onChange} onSubmit={this.onSubmit} success>
+        <Form onChange={this.onChange} onSubmit={this.onSubmit} success clear>
           <Form.Input
             label="Enter A number between 0 and 99,999"
             type="number"
             min="0"
-            value={input}
+            value={this.state.number}
             max="99999"
           />
           <Message>{this.state.word}</Message>
