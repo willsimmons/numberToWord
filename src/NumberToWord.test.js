@@ -12,6 +12,10 @@ it('returns null if a number is greater than 99,999', () => {
   expect(numberToWord(500000)).toBeNull();
 });
 
+it('returns null if we have an empty input', () => {
+  expect(numberToWord('')).toBeNull();
+}); //was just about to turn it in, when i found the above condition while playing with the form...
+
 it('returns the correct number if its a *special* number', () => {
   expect(numberToWord(40)).toBe('forty');
   expect(numberToWord(0)).toBe('zero');

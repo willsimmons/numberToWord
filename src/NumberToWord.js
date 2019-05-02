@@ -1,11 +1,16 @@
+//IOCE
 // Inputs: a number
 // Output: a string of the 'result' version of the input number
 // Constraints: input is a whole number between 0 - 99,999
 // EdgeCases: we're hoping for happy path, but lets do a simple check for between the specified range,
-// and ignore zeros in front of the actual number, lets not worry about scale either, given that this is
+// be able to handle  zeros in front of the actual number  (like 0009), lets not worry about scale either, given our inputs
 // a 'toy problem', but lets try to stay DRY
 
 const numberToWord = num => {
+  if (num === '') {
+    return null;
+  }
+
   const input = parseInt(num, 10);
 
   if (input < 0 || input > 99999) {
@@ -122,5 +127,11 @@ const numberToWord = num => {
     }
   }
 };
+
+// This solution is not scalable, but we could use the concepts within to create something more scalable,
+// i would think maybe we add the names for powers of 10's in another map, keep track of the index of the array
+// recursively
+// or even a counter variable outside of a recursively called function (which would be a combo between ln 92 and 124)
+//which would include additional parameters for a power of 10 and the next higher power of ten - just some thoughts
 
 export default numberToWord;
