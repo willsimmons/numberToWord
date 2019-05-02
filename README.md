@@ -8,8 +8,10 @@ Enter a number between 0 and 99,999 in the form and see the result by clicking o
 
 - Clone the project
 - npm or yarn install
-- build (prod) or start (dev)
+- yarn test
+- yarn build (production) or yarn start (development)
+
+### Or see it..
+[here](https://num-to-word.herokuapp.com/)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
